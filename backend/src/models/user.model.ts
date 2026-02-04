@@ -1,5 +1,5 @@
-// src/app/models/user.model.ts
-import { query } from '../../utils/database.util';
+// backend/src/models/user.model.ts
+import { query } from '../utils/database.util';
 
 export interface User {
   id: string;
@@ -18,6 +18,7 @@ export class UserModel {
       id: res.rows[0].id,
       email: res.rows[0].email,
       name: res.rows[0].name,
+      password: res.rows[0].password,
       createdAt: res.rows[0].created_at,
       updatedAt: res.rows[0].updated_at,
     };
@@ -30,6 +31,7 @@ export class UserModel {
       id: res.rows[0].id,
       email: res.rows[0].email,
       name: res.rows[0].name,
+      password: res.rows[0].password,
       createdAt: res.rows[0].created_at,
       updatedAt: res.rows[0].updated_at,
     };
@@ -41,10 +43,12 @@ export class UserModel {
        VALUES ($1, $2, $3, NOW(), NOW()) RETURNING *`,
       [userData.email, userData.name || userData.email.split('@')[0], userData.password || null]
     );
+
     return {
       id: res.rows[0].id,
       email: res.rows[0].email,
       name: res.rows[0].name,
+      password: res.rows[0].password,
       createdAt: res.rows[0].created_at,
       updatedAt: res.rows[0].updated_at,
     };

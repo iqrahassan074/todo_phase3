@@ -1,45 +1,23 @@
 import 'dotenv/config';
-import { serve } from '@hono/node-server';
 import app from './app';
 import { initializeDb } from './utils/database.util';
 
-const PORT = Number(process.env.PORT) || 4000;
+const port = parseInt(process.env.PORT || '3000');
 
-async function startService() {
-  try {
-    // Database (optional)
-    await initializeDb();
+async function startServer() {
+  // Initialize database (optional if DATABASE_URL missing)
+  await initializeDb();
 
-    const server = serve({
-      fetch: app.fetch,
-      port: PORT,
-    });
-
-    console.log(`🚀 Backend service running on port ${PORT}`);
-    console.log(`❤️ Health check: http://localhost:${PORT}/health`);
-
-    // Graceful shutdown
-    process.on('SIGTERM', () => {
-      console.log('🛑 Shutting down service...');
-      server.close?.();
-      process.exit(0);
-    });
-
-    process.on('SIGINT', () => {
-      console.log('🛑 Service stopped');
-      server.close?.();
-      process.exit(0);
-    });
-
-  } catch (error: any) {
-    if (error.code === 'EADDRINUSE') {
-      console.error(`❌ Port ${PORT} already in use`);
-      console.error(`👉 Close the running process or change PORT`);
-    } else {
-      console.error('❌ Failed to start backend service', error);
-    }
-    process.exit(1);
-  }
+  // Start server using Node's built-in HTTP (Vercel will handle routing)
+  app.listen(port, () => {
+    console.log(`✅ Backend running on port ${port}`);
+    console.log(`Health check: http://localhost:${port}/health`);
+  });
 }
 
-startService();
+if (require.main === module) {
+  startServer();
+}
+
+export { app };
+

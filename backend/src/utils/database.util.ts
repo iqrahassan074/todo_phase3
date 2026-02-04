@@ -1,15 +1,17 @@
+// backend/src/utils/database.util.ts
 import { Pool, PoolConfig } from 'pg';
 
-const dbUrl = process.env['DATABASE_URL'];
+const dbUrl = process.env.DATABASE_URL;
 
 let dbPool: Pool | null = null;
 
 if (dbUrl) {
   const dbConfig: PoolConfig = {
     connectionString: dbUrl,
-    ssl: process.env.NODE_ENV === 'production'
-      ? { rejectUnauthorized: false }
-      : undefined,
+    ssl:
+      process.env.NODE_ENV === 'production'
+        ? { rejectUnauthorized: false }
+        : undefined,
   };
   dbPool = new Pool(dbConfig);
 } else {

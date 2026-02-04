@@ -2,7 +2,6 @@ import { Hono } from 'hono';
 import { logger } from 'hono/logger';
 import { cors } from 'hono/cors';
 import { secureHeaders } from 'hono/secure-headers';
-
 import { chatRoutes } from './routes/chat.route';
 import { authRoutes } from './routes/auth.route';
 import { todoRoutes } from './routes/todo.route';
